@@ -1,0 +1,33 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}Car catalog{% endblock title %}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    {% tailwind_css %} {% comment %}
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css"
+    />
+    {% endcomment %}
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-gray-50 font-serif leading-normal tracking-normal">
+	{% include 'common/navbar.html' %}
+    <div class="container mx-auto">
+      {% block content %}{% endblock content %}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+    {% comment %}
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+    {% endcomment %}
+  </body>
+</html>
