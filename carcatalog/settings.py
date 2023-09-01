@@ -19,12 +19,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-print(os.environ.get('SECRET_KEY'))
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #project app
-    'core',
+    'core.apps.CoreConfig',
+    'accounts.apps.AccountsConfig',
 
     #third party app
     'tailwind',
@@ -58,6 +59,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'carcatalog.urls'
+
+AUTH_USER_MODEL = 'accounts.User'
 
 TEMPLATES = [
     {
@@ -126,6 +129,11 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATIC_ROOT = '/staticfiles'
+
+STATICFILES_DIRS = [
+    BASE_DIR /'static'
+]
+
 MEDIA_URL = 'media/asset/'
 MEDIA_ROOT = '/media'
 
