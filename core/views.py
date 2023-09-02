@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import TemplateView, DetailView, CreateView
+from django.views.generic import TemplateView, DetailView, CreateView,ListView
 
 from core.forms import CarCreateForm
 
@@ -17,6 +17,20 @@ class HomeView(TemplateView):
         context['recent_list'] = Car.objects.all()[:3]
 
         return context
+
+
+class CarListView(ListView):
+    model = Car
+    template_name = "core/car_list.html"
+    context_object_name = 'cars'
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['item_per_page'] = self.paginate_by
+        return context
+
+    
 
 
 class CarDetailView(DetailView):
