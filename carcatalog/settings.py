@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     #project app
     'core.apps.CoreConfig',
     'accounts.apps.AccountsConfig',
@@ -135,7 +136,7 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = 'media/asset/'
-MEDIA_ROOT = '/media'
+MEDIA_ROOT = 'media/'
 
 TAILWIND_APP_NAME = 'core'
 
