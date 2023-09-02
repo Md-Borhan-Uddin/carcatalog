@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
+from django.contrib.auth.views import LogoutView
 from django.views.generic import CreateView
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.messages.views import SuccessMessageMixin
@@ -32,6 +33,9 @@ class UserLoginView(View):
             if user is not None:
                 login(request,user)
                 return redirect(reverse_lazy('home'))
-        print(form)
-        return render(request,self.tamplates_name,{'form':form})
         
+        return render(request,self.tamplates_name,{'form':form})
+
+class LogoutView(LogoutView):
+    def get_success_url(self,*args, **kwargs):
+        return reverse_lazy('home')

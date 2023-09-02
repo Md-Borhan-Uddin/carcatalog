@@ -1,7 +1,11 @@
 from typing import Any, Dict
-from django.db import models
+from django.utils.text import slugify
+from django.forms.models import BaseModelForm
+from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import TemplateView, DetailView, CreateView
+
+from core.forms import CarCreateForm
 
 from core.models import Car
 
@@ -23,6 +27,16 @@ class CarDetailView(DetailView):
     pk_url_kwarg = 'pk'
     slug_field = 'slug'
 
-    # def get_queryset(self,*args, **kwargs):
-    #     data = self.kwargs
-    #     return Car.objects.get(id=data.get('pk'),slug=data.get('slug'))
+
+class CarCreateView(CreateView):
+    model = Car
+    template_name = "core/create_car.html"
+    form_class = CarCreateForm
+
+
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        print(form.instance)
+        form.instance.user = self.request.user
+        form.instance.slug = slugify(form.instance.title)
+        car = form.save()
+        return super().form_invalid(form)

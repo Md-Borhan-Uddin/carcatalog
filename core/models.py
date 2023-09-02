@@ -7,7 +7,7 @@ class Car(models.Model):
     title = models.CharField(("Title"), max_length=250)
     slug = models.SlugField(("Slug"),null=True)
     brand = models.CharField(("Brand"), max_length=50)
-    modal = models.CharField(("Modal"), max_length=50)
+    modal = models.CharField(("Model"), max_length=50)
     description = models.TextField(("Description"))
     price = models.DecimalField(("Price"), max_digits=12, decimal_places=2)
     image = models.ImageField(("Picture"), upload_to='car/')
