@@ -3,7 +3,10 @@ from django.urls import reverse_lazy
 from django.utils.text import slugify
 from django.contrib import messages
 from django.shortcuts import render
-from django.views.generic import TemplateView, DetailView, CreateView,ListView
+from django.views.generic import (
+    TemplateView,UpdateView, DetailView, 
+    CreateView,ListView,DeleteView
+)
 
 from core.forms import CarCreateForm
 
@@ -56,9 +59,29 @@ class CarCreateView(CreateView):
 
 
     def form_valid(self, form):
-        print(form.cleaned_data)
         form.instance.user = self.request.user
         form.instance.slug = slugify(form.instance.title)
         car = form.save()
         # messages.success(self.request,'car added successfully')
-        return super().form_invalid(form)
+        return super().form_valid(form)
+
+
+class CarUpdateView(UpdateView):
+    model = Car
+    template_name = "core/create_car.html"
+    form_class = CarCreateForm
+    success_url = reverse_lazy('admin_car')
+
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.slug = slugify(form.instance.title)
+        car = form.save()
+        # messages.success(self.request,'car added successfully')
+        return super().form_valid(form)
+
+
+class CarDeleteView(DeleteView):
+    model = Car
+    template_name = "core/delete_car.html"
+    success_url = reverse_lazy('admin_car')

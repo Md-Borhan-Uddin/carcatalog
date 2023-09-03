@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.middleware.csrf import get_token
 
 from accounts.models import User
+from orders.models import Order
 
 
 class RegisterForm(UserCreationForm):
@@ -54,3 +55,16 @@ class UserUpdateForm(forms.ModelForm):
         #     'image':forms.FileInput()
         # }
         
+
+
+
+class OrderUpdateForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['status'].widget.attrs.update({
+            "class":"bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        })
+    class Meta:
+        model = Order
+        fields = ('status',)

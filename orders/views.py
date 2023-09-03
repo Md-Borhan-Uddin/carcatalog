@@ -5,7 +5,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy,reverse
 from django.views import View
-from django.views.generic import DetailView, CreateView
+from django.views.generic import DetailView, CreateView, DeleteView
 from accounts.models import Address, User
 
 
@@ -136,3 +136,15 @@ def payment_success(request):
     cart.is_pay = True
     cart.save()
     return render(request,'accounts/user/order_history.html',{'odere':order})
+
+
+
+class OrderDeleteView(DeleteView):
+    model = Order
+    template_name = "core/delete_car.html"
+
+    def get_success_url(self):
+        user = self.request.user
+        if user.is_superuser:
+            return redirect(reverse_lazy('admin_order'))
+        return redirect(reverse_lazy('user_order'))
