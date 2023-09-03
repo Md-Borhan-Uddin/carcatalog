@@ -87,6 +87,11 @@ class UserCreateView(SuccessMessageMixin,CreateView):
 class UserLoginView(View):
     tamplates_name = 'accounts/login.html'
     def get(self,request, *args, **kwargs):
+        user = request.user
+        if request.user.is_authenticated:
+            if user.is_staff and user.is_superuser:
+                return redirect(reverse_lazy('admin_dashboard', kwargs={'pk':user.id}))
+            return redirect(reverse_lazy('home'))
         return render(request,self.tamplates_name,{'form':LoginForm(request=request)})
     
     def post(self,request, *args, **kwargs):
@@ -99,7 +104,7 @@ class UserLoginView(View):
             if user is not None:
                 login(request,user)
                 if user.is_staff and user.is_superuser:
-                    return redirect(reverse_lazy('admin_dashboard', kwargs={'id':user.id}))
+                    return redirect(reverse_lazy('admin_dashboard', kwargs={'pk':user.id}))
                 return redirect(reverse_lazy('home'))
         
         return render(request,self.tamplates_name,{'form':form})

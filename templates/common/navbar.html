@@ -11,7 +11,8 @@
         {% if request.user.is_authenticated %}
 
         <!-- Required font awesome -->
-        {% comment %} <a
+        {% if request.user.is_superuser %}
+        <a
         href="{% url 'car_create' %}"
         data-te-ripple-init
         data-te-ripple-color="light"
@@ -27,7 +28,8 @@
             clip-rule="evenodd" />
         </svg>
         Listing 
-        </a> {% endcomment %}
+        </a> 
+        {% endif %}
         {% cart_popup %}
         
 
