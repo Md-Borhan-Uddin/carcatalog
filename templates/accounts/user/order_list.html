@@ -12,23 +12,20 @@
                 <thead class="border-b font-medium dark:border-neutral-500">
                   <tr>
                     <th scope="col" class="px-6 py-4">NO</th>
-                    <th scope="col" class="px-6 py-4">User</th>
+                    <th scope="col" class="px-6 py-4">Date</th>
                     <th scope="col" class="px-6 py-4">Price</th>
                     <th scope="col" class="px-6 py-4">Status</th>
-                    <th scope="col" class="px-6 py-4">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for order in orders %}
                   <tr class="border-b dark:border-neutral-500">
-                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{forloop.counter}}</td>
-                    <td class="whitespace-nowrap px-6 py-4">{{order.user.email}}</td>
-                    <td class="whitespace-nowrap px-6 py-4">{{order.cart.total}}</td>
-                    <td class="whitespace-nowrap px-6 py-4">{{order.status}}</td>
-                    <td class="whitespace-nowrap px-6 py-4">
-                        <a href="{% url 'admin_order_update' order.pk %}" class="focus:outline-none text-white bg-blue-400 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-blue-900">Edit</a>
-                        <a href="{% url 'order_delete' order.id%}" class="bg-red-700 focus:outline-none text-white  hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</a>
-                    </td>
+                  <a href="#">
+                      <td class="whitespace-nowrap px-6 py-4 font-medium">{{forloop.counter}}</td>
+                      <td class="whitespace-nowrap px-6 py-4">{{order.user.create|date:'d-m-Y'}}</td>
+                      <td class="whitespace-nowrap px-6 py-4">{{order.cart.total}}</td>
+                      <td class="whitespace-nowrap px-6 py-4">{{order.status}}</td>
+                    </a>
                   </tr>
                   
                   {% endfor %}
