@@ -1,5 +1,4 @@
-from typing import Any, Dict
-from django.db.models.query import QuerySet
+
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -12,15 +11,20 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views import View
 
 
+
 from accounts.forms import LoginForm, OrderUpdateForm, RegisterForm, UserUpdateForm
+from accounts.mixin import LoginMixin
 from accounts.models import User
 from core.models import Car
 from orders.models import Order
 # Create your views here.
 
 
-class AdminDashboardView(View):
+
+
+class AdminDashboardView(LoginMixin,View):
     template_name = 'accounts/admin/dashboard.html'
+    
     def get(self,request,*args, **kwargs):
         
         context = {
@@ -32,27 +36,27 @@ class AdminDashboardView(View):
 
 
 
-class AdminCarListdView(ListView):
+class AdminCarListdView(LoginMixin,ListView):
     model = Car
     template_name = 'accounts/admin/car_list.html'
     context_object_name=  'cars'
     paginate_by = 10
 
 
-class AdminOrderUpdateView(UpdateView):
+class AdminOrderUpdateView(LoginMixin,UpdateView):
     model = Order
     template_name = 'accounts/admin/edit_order.html'
     form_class = OrderUpdateForm
     success_url = reverse_lazy('admin_order')
 
 
-class AdminOrderListdView(ListView):
+class AdminOrderListdView(LoginMixin,ListView):
     model = Order
     template_name = 'accounts/admin/order_list.html'
     context_object_name=  'orders'
     paginate_by = 10
 
-class UserProfileView(UpdateView):
+class UserProfileView(LoginMixin,UpdateView):
     model = User
     template_name = 'accounts/profile.html'
     form_class = UserUpdateForm
@@ -115,7 +119,7 @@ class LogoutView(LogoutView):
     
 
 
-class UserOrderListdView(ListView):
+class UserOrderListdView(LoginMixin,ListView):
     model = Order
     template_name = 'accounts/user/order_list.html'
     context_object_name=  'orders'

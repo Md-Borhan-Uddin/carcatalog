@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy,reverse
 from django.views import View
 from django.views.generic import DetailView, CreateView, DeleteView
+from accounts.mixin import LoginMixin
 from accounts.models import Address, User
 
 
@@ -41,7 +42,7 @@ class CartCreateView(View):
 
         return redirect(reverse('car_list'))
 
-class CartDetailView(DetailView):
+class CartDetailView(LoginMixin,DetailView):
     model = Cart
     template_name = "order/cart.html"
     context_object_name = 'cart'
@@ -49,7 +50,7 @@ class CartDetailView(DetailView):
     def get_object(self):
         return Cart.objects.get(user=self.request.user,is_pay=False)
 
-class CartItemUpdate(View):
+class CartItemUpdate(LoginMixin,View):
     
 
     def cart_obj(self):
@@ -88,7 +89,7 @@ class CartItemUpdate(View):
         return redirect(reverse_lazy('cart'))
 
 
-class CheckoutView(CreateView):
+class CheckoutView(LoginMixin,CreateView):
     model = Order
     template_name = 'order/checkout.html'
     form_class = AddressForm
@@ -114,8 +115,9 @@ class CheckoutView(CreateView):
     
 @csrf_exempt
 def payment_success(request):
+    if not request.user.is_authenticated:
+        return redirect(reverse_lazy('login'))
     data = request.POST
-    print(data.get('value_a'))
     cart = Cart.objects.get(id=data.get('value_a'))
     address = Address.objects.get(id=data.get('value_b'))
     user = User.objects.get(id=data.get('value_c'))
@@ -139,7 +141,7 @@ def payment_success(request):
 
 
 
-class OrderDeleteView(DeleteView):
+class OrderDeleteView(LoginMixin,DeleteView):
     model = Order
     template_name = "core/delete_car.html"
 

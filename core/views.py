@@ -7,6 +7,7 @@ from django.views.generic import (
     TemplateView,UpdateView, DetailView, 
     CreateView,ListView,DeleteView
 )
+from accounts.mixin import LoginMixin
 
 from core.forms import CarCreateForm
 
@@ -51,7 +52,7 @@ class CarDetailView(DetailView):
     slug_field = 'slug'
 
 
-class CarCreateView(CreateView):
+class CarCreateView(LoginMixin,CreateView):
     model = Car
     template_name = "core/create_car.html"
     form_class = CarCreateForm
@@ -66,7 +67,7 @@ class CarCreateView(CreateView):
         return super().form_valid(form)
 
 
-class CarUpdateView(UpdateView):
+class CarUpdateView(LoginMixin,UpdateView):
     model = Car
     template_name = "core/create_car.html"
     form_class = CarCreateForm
@@ -81,7 +82,7 @@ class CarUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class CarDeleteView(DeleteView):
+class CarDeleteView(LoginMixin,DeleteView):
     model = Car
     template_name = "core/delete_car.html"
     success_url = reverse_lazy('admin_car')
