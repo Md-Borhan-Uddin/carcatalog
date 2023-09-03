@@ -1,15 +1,50 @@
+from typing import Any, Dict
+from django.forms.models import BaseModelForm
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
 from django.contrib.auth.views import LogoutView
-from django.views.generic import CreateView
+from django.views.generic import CreateView,UpdateView
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.messages.views import SuccessMessageMixin
+from django.views import View
 
 
-from accounts.forms import LoginForm, RegisterForm
+from accounts.forms import LoginForm, RegisterForm, UserUpdateForm
 from accounts.models import User
 # Create your views here.
+
+
+class AdminDashboardView(View):
+    template_name = 'accounts/admin.html'
+    def get(self,request,*args, **kwargs):
+        return render(request,self.template_name)
+
+class UserProfileView(UpdateView):
+    model = User
+    template_name = 'accounts/profile.html'
+    form_class = UserUpdateForm
+    pk_url_kwarg = 'pk'
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        context['user'] = User.objects.get(id=self.kwargs.get('pk'))
+        return context
+    
+    
+    def form_valid(self, form):
+        print('form data')
+        print(form.cleaned_data)
+        return super().form_valid(form)
+    
+    def form_invalid(self, form: BaseModelForm) -> HttpResponse:
+        print('form error')
+        print(form.cleaned_data)
+        return super().form_invalid(form)
+
 
 class UserCreateView(SuccessMessageMixin,CreateView):
     model = User

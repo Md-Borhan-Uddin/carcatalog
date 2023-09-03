@@ -1,5 +1,5 @@
 from django.db import models
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 
 class Car(models.Model):
@@ -18,5 +18,5 @@ class Car(models.Model):
         return f'{self.title}--->{self.brand}--->{self.modal}'
     
     def get_absolute_url(self):
-        return reverse("car_detail", kwargs={"pk": self.pk,'slug':self.slug})
+        return reverse_lazy("car_detail", kwargs={"pk": self.pk,'slug':self.slug})
     

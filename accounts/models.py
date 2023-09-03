@@ -22,5 +22,15 @@ class User(AbstractUser):
         return self.email
     
     def get_absolute_url(self):
-        return reverse("userdetail", kwargs={"pk": self.pk})
-    
+        return reverse("profile", kwargs={"pk": self.pk})
+
+
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    address_line = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.user.email

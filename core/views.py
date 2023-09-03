@@ -1,7 +1,7 @@
-from typing import Any, Dict
+
+from django.urls import reverse_lazy
 from django.utils.text import slugify
-from django.forms.models import BaseModelForm
-from django.http import HttpResponse
+from django.contrib import messages
 from django.shortcuts import render
 from django.views.generic import TemplateView, DetailView, CreateView,ListView
 
@@ -12,7 +12,7 @@ from core.models import Car
 class HomeView(TemplateView):
     template_name = "core/home.html"
 
-    def get_context_data(self, **kwargs: Any):
+    def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context['recent_list'] = Car.objects.all()[:3]
 
@@ -27,7 +27,13 @@ class CarListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['item_per_page'] = self.paginate_by
+        # context['brand'] = self.model.objects.values('brand')
+        
+        
+        context.update({
+            'brand_list':set([b.get('brand') for b in self.model.objects.values('brand')]),
+            'model_list' : set([b.get('modal') for b in self.model.objects.values('modal')])
+        })
         return context
 
     
@@ -46,11 +52,13 @@ class CarCreateView(CreateView):
     model = Car
     template_name = "core/create_car.html"
     form_class = CarCreateForm
+    success_url = reverse_lazy('car_list')
 
 
-    def form_valid(self, form: BaseModelForm) -> HttpResponse:
-        print(form.instance)
+    def form_valid(self, form):
+        print(form.cleaned_data)
         form.instance.user = self.request.user
         form.instance.slug = slugify(form.instance.title)
         car = form.save()
+        # messages.success(self.request,'car added successfully')
         return super().form_invalid(form)
