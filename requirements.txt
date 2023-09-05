@@ -3,7 +3,7 @@ asgiref==3.7.2
 binaryornot==0.4.4
 certifi==2023.7.22
 chardet==5.2.0
-Django==4.2.4
+Django==4.0.0
 django-dotenv==1.4.2
 django-htmx==1.16.0
 django-tailwind==3.6.0
