@@ -6,7 +6,7 @@ from django.utils.crypto import get_random_string
 
 def ssl_commerce_payment(request,address,cart):
 
-    settings = { 'store_id': os.environ.get('STORE_ID'), 'store_pass': os.environ.get('STORE_PASS'), 'issandbox': True }
+    settings = { 'store_id': 'carca64f474c798521', 'store_pass': 'carca64f474c798521@ssl', 'issandbox': True }
     sslcz = SSLCOMMERZ(settings)
     post_body = {}
     post_body['total_amount'] = cart.total
