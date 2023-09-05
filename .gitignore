@@ -37,7 +37,6 @@ __pycache__/
 env/
 build/
 develop-eggs/
-media/*
 downloads/
 eggs/
 lib/
@@ -88,4 +87,3 @@ __pycache__/
 local_settings.py
 
 .env
-db.sqlite3
