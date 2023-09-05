@@ -5,15 +5,15 @@ from django.utils.crypto import get_random_string
 
 
 def ssl_commerce_payment(request,address,cart):
-
+    
     settings = { 'store_id': 'carca64f474c798521', 'store_pass': 'carca64f474c798521@ssl', 'issandbox': True }
     sslcz = SSLCOMMERZ(settings)
     post_body = {}
     post_body['total_amount'] = cart.total
     post_body['currency'] = "BDT"
     post_body['tran_id'] = get_random_string(14)
-    post_body['success_url'] = 'http://127.0.0.1:8000/order/payment-success/'
-    post_body['fail_url'] = "http://127.0.0.1:8000/order/checkout/"
+    post_body['success_url'] = f'{request.get_host()}/order/payment-success/'
+    post_body['fail_url'] = f"{request.get_host()}/order/checkout/"
     post_body['cancel_url'] = "your cancel url"
     post_body['emi_option'] = 0
     post_body['cus_name'] = request.user.get_full_name
